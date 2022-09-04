@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+  <item
+      android:id="@+id/page_1"
+      android:enabled="true"
+      android:icon="@drawable/ic_assessment_blue_24dp"
+      android:title="Dash"
+      android:visible="true"
+      app:itemIconTint="#1B6BB3"
+      app:itemTextColor="#1B6BB3"
+      app:showAsAction="ifRoom" />
+  <item
+      android:id="@+id/page_2"
+      android:enabled="true"
+      android:icon="@drawable/ic_camera_alt_blue_24dp"
+      android:title="Foto"
+      app:itemIconTint="#1B6BB3"
+      app:itemTextColor="#1B6BB3"
+      app:showAsAction="ifRoom" />
+  <item
+      android:id="@+id/page_3"
+      android:enabled="true"
+      android:icon="@drawable/ic_info_outline_blue_24dp"
+      android:title="Config."
+      app:itemIconTint="#1B6BB3"
+      app:itemTextColor="#1B6BB3"
+      app:showAsAction="ifRoom" />
+</menu>

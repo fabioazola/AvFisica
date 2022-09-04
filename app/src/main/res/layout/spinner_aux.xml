@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <Spinner
+      android:id="@+id/spinner_edit"
+      android:layout_width="323dp"
+      android:layout_height="41dp"
+      android:layout_marginStart="10dp"
+      android:layout_marginTop="50dp"
+      android:layout_marginEnd="10dp"
+      android:gravity="center"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.476"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@+id/textView77" />
+
+  <TextView
+      android:id="@+id/textView77"
+      android:layout_width="0dp"
+      android:layout_height="30dp"
+      android:layout_marginTop="36dp"
+
+      android:maxLines="1"
+      android:text="Selecione:"
+      android:textColor="#1B6BB3"
+      android:textStyle="bold"
+      app:autoSizeMaxTextSize="100sp"
+      app:autoSizeMinTextSize="20sp"
+      app:autoSizeStepGranularity="2sp"
+      app:autoSizeTextType="uniform"
+      app:layout_constraintEnd_toEndOf="@+id/spinner_edit"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="@+id/spinner_edit"
+      app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

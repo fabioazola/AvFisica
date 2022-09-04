@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:screenOrientation="portrait"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+
+        <TextView
+            android:id="@+id/textViewSubTitle"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="Lista de Exercícios"
+            android:textColor="#1B6BB3"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chipGroup_sel_exe" />
+
+
+        <ScrollView
+            android:id="@+id/scrowTbExercicioItens"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:fillViewport="true"
+            android:scrollbars="horizontal|vertical"
+            app:layout_constraintBottom_toTopOf="@+id/button_cadastrar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSubTitle">
+
+            <TableLayout
+                android:id="@+id/table_ficha_itens"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:scaleType="fitXY"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                android:visibility="visible">
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+            </TableLayout>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/textViewTitle_"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="NOVO TREINO"
+            android:textColor="#1B6BB3"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="30sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.183"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="30dp"
+            android:text="Nome Treino:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitle_" />
+
+    <EditText
+        android:id="@+id/editText_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginRight="45dp"
+        android:background="@drawable/botao_customizado_transp"
+        android:ems="10"
+        android:hint="Nome"
+        android:inputType="textPersonName"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView_name"
+        app:layout_constraintTop_toTopOf="@+id/textView_name" />
+
+        <!--make sure to group the chips-->
+        <!--style attribute is mandatory
+             for each of the chips-->
+
+        <Button
+            android:id="@+id/button_cadastrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/botao_customizado"
+            android:fadeScrollbars="true"
+            android:freezesText="false"
+            android:shadowColor="#9E4F4F"
+            android:text="Salvar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="36sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup_sel_exe"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chipExibir"
+            app:singleSelection="false">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_peito"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Peito" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_costas"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Costas" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_ombro"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ombro" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_perna"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Perna" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_braço"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Braço" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_abdominal"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Abdominal" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_aerobico"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aerobico" />
+
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <Button
+            android:id="@+id/btnExportar"
+            android:layout_width="40dp"
+            android:layout_height="46dp"
+            android:background="@drawable/ic_share_blue_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/button_cadastrar"
+            app:layout_constraintEnd_toStartOf="@+id/btnImportar"
+            app:layout_constraintStart_toEndOf="@+id/imageButton_Ficha_Editar"
+            app:layout_constraintTop_toTopOf="@+id/button_cadastrar"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btnImportar"
+            android:layout_width="43dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/ic_file_download_blue_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnExportar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnExportar"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageButton
+            android:id="@+id/imageButton_Ficha_Editar"
+            android:layout_width="40dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="56dp"
+            android:background="@drawable/ic_edit_blue_24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/button_cadastrar"
+            app:layout_constraintStart_toEndOf="@+id/button_cadastrar"
+            app:layout_constraintTop_toTopOf="@+id/button_cadastrar"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_edit_blue_24dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipExibir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:checkable="true"
+            android:text="Exibir na tela de seleção"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView_name"
+            app:layout_constraintTop_toBottomOf="@+id/editText_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:screenOrientation="portrait"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView_tipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tipo:"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/textView_name"
+        app:layout_constraintStart_toStartOf="@+id/textView_name"
+        app:layout_constraintTop_toTopOf="@+id/spnnerTipo" />
+
+    <ImageButton
+        android:id="@+id/imageButton_Exercicio_Excluir"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="5dp"
+        android:background="@color/ic_foto_background"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editText_name"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/ic_delete" />
+
+    <ImageButton
+        android:id="@+id/imageButton_Exercicio_Editar"
+        android:layout_width="47dp"
+        android:layout_height="51dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/ic_foto_background"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_Exercicio_Novo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_Exercicio_Novo"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_edit_blue_24dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton_Exercicio_Novo"
+        android:layout_width="47dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="15dp"
+        android:background="@color/ic_foto_background"
+        app:layout_constraintBottom_toBottomOf="@+id/button_cadastrar"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_Exercicio_Editar"
+        app:layout_constraintStart_toEndOf="@+id/button_cadastrar"
+        app:layout_constraintTop_toTopOf="@+id/button_cadastrar"
+        app:srcCompat="@drawable/ic_add_circle_blue_24dp" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="320dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="EXERCÍCIO"
+        android:textColor="#1B6BB3"
+        android:textStyle="bold"
+        app:autoSizeMaxTextSize="100sp"
+        app:autoSizeMinTextSize="30sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editText_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="45dp"
+        android:background="@drawable/botao_customizado_transp"
+        android:ems="10"
+        android:hint="Nome"
+        android:inputType="textPersonName"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView_name"
+        app:layout_constraintTop_toTopOf="@+id/textView_name"
+        app:layout_constraintVertical_bias="0.461" />
+
+    <TextView
+        android:id="@+id/textView_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Nome:"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+    <Button
+        android:id="@+id/button_cadastrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/botao_customizado"
+        android:fadeScrollbars="true"
+        android:freezesText="false"
+        android:shadowColor="#9E4F4F"
+        android:text="Salvar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_Exercicio" />
+
+    <ImageView
+        android:id="@+id/imageView_Exercicio"
+        android:layout_width="0dp"
+        android:layout_height="185dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spnnerTipo"
+        app:srcCompat="@drawable/treino" />
+
+    <Spinner
+        android:id="@+id/spnnerTipo"
+        android:layout_width="240dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@+id/editText_name"
+        app:layout_constraintTop_toBottomOf="@+id/editText_name" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

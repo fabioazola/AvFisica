@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ic_foto_background">
+
+    <TextView
+        android:id="@+id/txtObs"
+        android:layout_width="387dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:text="Obs"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/txtExercicioName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtExercicioName"
+        app:layout_constraintTop_toBottomOf="@+id/txtExercicioName" />
+
+    <Button
+        android:id="@+id/button_salvar"
+        android:layout_width="106dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/botao_customizado"
+        android:fadeScrollbars="true"
+        android:freezesText="false"
+        android:shadowColor="#9E4F4F"
+        android:text="Salvar"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrowTbExercicioItens"
+        app:layout_constraintVertical_bias="0.488" />
+
+    <ScrollView
+        android:id="@+id/scrowTbExercicioItens"
+        android:layout_width="wrap_content"
+        android:layout_height="257dp"
+        android:layout_marginTop="24dp"
+        android:fillViewport="true"
+        android:scrollbars="horizontal|vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtObs">
+
+        <TableLayout
+            android:id="@+id/table_exercicio_repeticao"
+            android:layout_width="wrap_content"
+            android:layout_height="279dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/scrowTbExercicioItens"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.315"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/scrowTbExercicioItens">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </TableLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/imageViewExercicio"
+        android:layout_width="247dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.028"
+        app:srcCompat="@mipmap/ic_foto" />
+
+    <TextView
+        android:id="@+id/txtExercicioName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="10dp"
+        android:text="Nome Exercicio"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewExercicio" />
+
+    <CheckBox
+        android:id="@+id/checkBox_all_exercicio"
+        android:layout_width="0dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        android:text="Todos"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrowTbExercicioItens" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

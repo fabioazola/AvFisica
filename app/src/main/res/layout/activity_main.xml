@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:screenOrientation="portrait"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorButtonNormal"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="404dp"
+        android:layout_height="178dp"
+        android:background="@color/ic_launcher_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:background="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:itemBackground="@color/ic_config_background"
+        app:itemIconTint="#1B6BB3"
+        app:itemTextColor="#1B6BB3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_config"
+        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/bottom_navegate" />
+
+    <ImageView
+        android:id="@+id/imageView_peso"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_peso_ideal"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_corporal"
+        app:layout_constraintStart_toEndOf="@+id/imageView_peso_home"
+        app:layout_constraintTop_toBottomOf="@+id/textView_nome_main"
+        app:srcCompat="@drawable/peso_1" />
+
+    <ImageView
+        android:id="@+id/imageView_peso_home"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="8dp"
+        android:adjustViewBounds="false"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_dados"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_peso"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_nome_main"
+        app:srcCompat="@drawable/dash" />
+
+    <ImageView
+        android:id="@+id/imageView_dados"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_vo2"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_peso_ideal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_peso_home"
+        app:srcCompat="@drawable/compare" />
+
+    <ImageView
+        android:id="@+id/imageView_config"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_suporte"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_vo2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView_vo2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_vo2"
+        app:srcCompat="@drawable/conf" />
+
+    <ImageView
+        android:id="@+id/imageView_cardio"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_suporte"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_monitorado"
+        app:layout_constraintStart_toEndOf="@+id/imageView_vo2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_peso_ideal"
+        app:srcCompat="@drawable/corrida" />
+
+    <ImageView
+        android:id="@+id/imageView_suporte"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_cardio"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView_cardio"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_cardio"
+        app:srcCompat="@drawable/suporte" />
+
+    <ImageView
+        android:id="@+id/imageView_dicas"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView_suporte"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_cardio"
+        app:srcCompat="@drawable/dicas" />
+
+    <ImageView
+        android:id="@+id/imageView_monitorado"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_dicas"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView_cardio"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_treino"
+        app:srcCompat="@drawable/monitorado" />
+
+    <ImageView
+        android:id="@+id/imageView_peso_ideal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_cardio"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_treino"
+        app:layout_constraintStart_toEndOf="@+id/imageView_dados"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_peso"
+        app:srcCompat="@drawable/caloria" />
+
+    <ImageView
+        android:id="@+id/imageView_vo2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_config"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_cardio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_dados"
+        app:srcCompat="@drawable/vo2" />
+
+    <ImageView
+        android:id="@+id/imageView_treino"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_monitorado"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView_peso_ideal"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_corporal"
+        app:srcCompat="@drawable/treino" />
+
+    <ImageView
+        android:id="@+id/imageView_corporal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_treino"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView_peso"
+        app:layout_constraintTop_toTopOf="@+id/imageView_peso"
+        app:layout_constraintVertical_bias="0.51"
+        app:srcCompat="@drawable/corporal" />
+
+    <TextView
+        android:id="@+id/textView_nome_main"
+        android:layout_width="274dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:maxLines="2"
+        android:text="TextView"
+        android:textColor="#1B6BB3"
+        android:textStyle="bold"
+        app:autoSizeMaxTextSize="20sp"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_peso"
+        app:layout_constraintEnd_toStartOf="@+id/progressBarSincronismo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/imageView_pic"
+        app:layout_constraintBottom_toTopOf="@+id/textView_nome_main"
+        app:layout_constraintStart_toStartOf="@+id/textView_nome_main"
+        android:layout_width="81dp"
+        android:layout_height="88dp"
+        android:background="@mipmap/ic_foto_foreground"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarSincronismo"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="189dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView_nome_main"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

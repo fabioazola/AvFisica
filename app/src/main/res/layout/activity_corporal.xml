@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:screenOrientation="portrait"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <ImageButton
+            android:id="@+id/imageButton_corporal_info2"
+            android:layout_width="31dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="45dp"
+            android:background="#1B6BB3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:background="@color/colorPrimary"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:itemBackground="@color/ic_config_background"
+            app:itemIconTint="#1B6BB3"
+            app:itemTextColor="#1B6BB3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_navegate" />
+
+        <TextView
+            android:id="@+id/textView_pescoco"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Pescoço:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+        <TextView
+            android:id="@+id/textView_abd"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Abdomen:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_cintura" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="200dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Medidas em cm:"
+            android:textColor="#1B6BB3"
+            android:textSize="26dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/textView_corporal_data"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_resultado_corporal" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="CORPORAL"
+            android:textColor="#1B6BB3"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="20sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/editText_abdominal"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:88"
+            app:autoSizeTextType="uniform"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_abd"
+            app:layout_constraintStart_toEndOf="@+id/textView_pescoco"
+            app:layout_constraintTop_toTopOf="@+id/textView_abd" />
+
+        <EditText
+            android:id="@+id/editText_pescoço"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:39"
+            app:autoSizeTextType="uniform"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_pescoco"
+            app:layout_constraintStart_toEndOf="@+id/textView_pescoco"
+            app:layout_constraintTop_toTopOf="@+id/textView_pescoco" />
+
+        <Button
+            android:id="@+id/button_salvar"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/botao_customizado"
+            android:text="Salvar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_pant_esq" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/graficoID"
+            android:layout_width="348dp"
+            android:layout_height="240dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner">
+
+        </com.github.mikephil.charting.charts.LineChart>
+
+        <TextView
+            android:id="@+id/textView_quadril"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Quadril:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_abd" />
+
+        <TextView
+            android:id="@+id/textView_bcps_esq"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Bíceps Esq:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_bcps_dir" />
+
+        <TextView
+            android:id="@+id/textView_coxa_dir"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Coxa Dir:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_ant_esq" />
+
+        <TextView
+            android:id="@+id/textView_coxa_esq"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Coxa Esq:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_coxa_dir" />
+
+        <TextView
+            android:id="@+id/textView_bcps_dir"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Bíceps Dir:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_quadril" />
+
+        <EditText
+            android:id="@+id/editText_quadril"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:80"
+            app:autoSizeTextType="uniform"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_quadril"
+            app:layout_constraintStart_toEndOf="@+id/textView_quadril"
+            app:layout_constraintTop_toTopOf="@+id/textView_quadril" />
+
+        <EditText
+            android:id="@+id/editText_bd"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:36"
+            app:autoSizeTextType="uniform"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_bcps_dir"
+            app:layout_constraintStart_toEndOf="@+id/textView_bcps_dir"
+            app:layout_constraintTop_toTopOf="@+id/textView_bcps_dir" />
+
+        <EditText
+            android:id="@+id/editText_be"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:36"
+            app:autoSizeTextType="uniform"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_bcps_esq"
+            app:layout_constraintStart_toEndOf="@+id/textView_bcps_esq"
+            app:layout_constraintTop_toTopOf="@+id/textView_bcps_esq" />
+
+        <EditText
+            android:id="@+id/editText_cd"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:56"
+            app:autoSizeTextType="uniform"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_coxa_dir"
+            app:layout_constraintStart_toEndOf="@+id/textView_coxa_dir"
+            app:layout_constraintTop_toTopOf="@+id/textView_coxa_dir" />
+
+        <EditText
+            android:id="@+id/editText_ce"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:56"
+            app:autoSizeTextType="uniform"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_coxa_esq"
+            app:layout_constraintStart_toEndOf="@+id/textView_coxa_esq"
+            app:layout_constraintTop_toTopOf="@+id/textView_coxa_esq" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.186"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_salvar" />
+
+        <TextView
+            android:id="@+id/textView_resultado_corporal"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeMinTextSize="6sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:text="Indice de Gordura"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView14"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <ImageButton
+            android:id="@+id/imageButton_corporal_edit"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/ic_foto_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_edit_blue_24dp" />
+
+        <TextView
+            android:id="@+id/textView_torax"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Torax:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_pescoco" />
+
+        <TextView
+            android:id="@+id/textView_cintura"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="24dp"
+            android:text="Cintura:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_torax" />
+
+        <EditText
+            android:id="@+id/editText_torax"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:88"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_torax"
+            app:layout_constraintStart_toEndOf="@+id/textView_torax"
+            app:layout_constraintTop_toTopOf="@+id/textView_torax" />
+
+        <EditText
+            android:id="@+id/editText_cintura"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:88"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_cintura"
+            app:layout_constraintBottom_toTopOf="@+id/textView_abd"
+            app:layout_constraintStart_toEndOf="@+id/textView_cintura"
+            app:layout_constraintTop_toBottomOf="@+id/textView_torax" />
+
+        <TextView
+            android:id="@+id/textView_ant_dir"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Ante Br Dir:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_bcps_esq" />
+
+        <EditText
+            android:id="@+id/editText_ant_dir"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:26"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_ant_dir"
+            app:layout_constraintStart_toEndOf="@+id/textView_ant_dir"
+            app:layout_constraintTop_toTopOf="@+id/textView_ant_dir" />
+
+        <TextView
+            android:id="@+id/textView_ant_esq"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Ante Br Esq:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_ant_dir" />
+
+        <EditText
+            android:id="@+id/editText_ant_esq"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:26"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_ant_esq"
+            app:layout_constraintStart_toEndOf="@+id/textView_ant_esq"
+            app:layout_constraintTop_toTopOf="@+id/textView_ant_esq" />
+
+        <TextView
+            android:id="@+id/textView_pant_dir"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Pant. Dir:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_coxa_esq" />
+
+        <TextView
+            android:id="@+id/textView_pant_esq"
+            android:layout_width="149dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="20dp"
+            android:text="Pant. Esq:"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_pant_dir" />
+
+        <EditText
+            android:id="@+id/editText_pan_dir"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:30"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_pant_dir"
+            app:layout_constraintStart_toEndOf="@+id/textView_pant_dir"
+            app:layout_constraintTop_toTopOf="@+id/textView_pant_dir" />
+
+        <EditText
+            android:id="@+id/editText_pan_esq"
+            android:layout_width="123dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:ems="10"
+            android:hint="ex:30"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_pant_esq"
+            app:layout_constraintStart_toEndOf="@+id/textView_pant_esq"
+            app:layout_constraintTop_toTopOf="@+id/textView_pant_esq" />
+
+        <TextView
+            android:id="@+id/textView_corporal_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="#1B6BB3"
+            android:textStyle="bold"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="2sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/textView14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView14"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="@+id/textView14" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
