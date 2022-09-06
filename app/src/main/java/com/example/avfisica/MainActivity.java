@@ -57,7 +57,7 @@ import smartdevelop.ir.eram.showcaseviewlib.config.DismissType;
 import smartdevelop.ir.eram.showcaseviewlib.config.Gravity;
 import smartdevelop.ir.eram.showcaseviewlib.listener.GuideListener;
 
-
+//teste github
 public class MainActivity extends AppCompatActivity {
     ImageView btn_entrar, btn_corporal, btn_comparativo, btn_corrida, btn_peso, btn_vo2, btn_ajuda, btn_monitorado, btn_treino, btn_dicas;
     ImageView  btn_imc, btn_taxa, btn_home, imageView_pic, btn_suporte;
