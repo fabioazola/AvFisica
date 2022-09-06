@@ -239,23 +239,23 @@ public class Monitorado extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-//                    if(bAdapter==null){
-//                        Toast.makeText(getApplicationContext(),"Bluetooth Not Supported",Toast.LENGTH_SHORT).show();
-//                    }
-//                    else {
-//                        Set<BluetoothDevice> pairedDevices = bAdapter.getBondedDevices();
-//                        ArrayList list = new ArrayList();
-//                        if (pairedDevices.size() > 0) {
-//                            for (BluetoothDevice device : pairedDevices) {
-//                                String devicename = device.getName();
-//                                String macAddress = device.getAddress();
-//                                list.add("Name: " + devicename + "MAC Address: " + macAddress);
-//                            }
-//                            lstvw = (ListView) findViewById(R.id.deviceList);
-//                            aAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
-//                            lstvw.setAdapter(aAdapter);
-//                        }
-//                    }
+                    if(bAdapter==null){
+                        Toast.makeText(getApplicationContext(),"Bluetooth Not Supported",Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Set<BluetoothDevice> pairedDevices = bAdapter.getBondedDevices();
+                        ArrayList list = new ArrayList();
+                        if (pairedDevices.size() > 0) {
+                            for (BluetoothDevice device : pairedDevices) {
+                                String devicename = device.getName();
+                                String macAddress = device.getAddress();
+                                list.add("Name: " + devicename + "MAC Address: " + macAddress);
+                            }
+                            /*lstvw = (ListView) findViewById(R.id.deviceList);*/
+                            aAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
+                            lstvw.setAdapter(aAdapter);
+                        }
+                    }
                     mBluetoothAdapter.startDiscovery();
                 } catch (Exception e) {
                 }
