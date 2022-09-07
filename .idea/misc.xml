@@ -5,6 +5,8 @@
       <map>
         <entry key="app/src/main/res/layout-land/activity_monitorado.xml" value="0.14638447971781304" />
         <entry key="app/src/main/res/layout/activity_monitorado.xml" value="0.14266304347826086" />
+        <entry key="app/src/main/res/layout/activity_treino.xml" value="0.14266304347826086" />
+        <entry key="app/src/main/res/layout/dialog_ficha.xml" value="0.14266304347826086" />
       </map>
     </option>
   </component>
