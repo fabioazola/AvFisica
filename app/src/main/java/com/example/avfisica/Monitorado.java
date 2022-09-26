@@ -124,7 +124,7 @@ public class Monitorado extends AppCompatActivity {
     //Declaração das veriveis iteração de front-end
     TextView mHeartRate, txtCaloria, txtKM, txtMinKM, txtDistKM;
     ImageView imagem_ble;
-    Chronometer chronometer;
+    Chronometro chronometro;
     ToggleButton toggleBtnIniciar;
     FloatingActionButton floatingActionButton_ble;
     ImageButton imageAnalise;
@@ -206,11 +206,9 @@ public class Monitorado extends AppCompatActivity {
 
         //##############chronometer###########
         try {
-            chronometer = (Chronometer) findViewById(R.id.chronometer);
-            chronometer.setBase(SystemClock.elapsedRealtime());
-            chronometer.setAutoSizeTextTypeUniformWithConfiguration(30, 50, 1, 1);
-            chronometer.setBackgroundColor(Color.WHITE); // set green color for the background of a chronometer
-            chronometer.setTextColor(Color.BLACK);
+            chronometro = new Chronometro(this, (Chronometer) findViewById(R.id.chronometer));
+            if (!chronometro.createChronometer())
+                Toast.makeText(getApplicationContext(),"Falha no cronometro!",Toast.LENGTH_SHORT).show();
         }catch (Exception e)
         {
             e.printStackTrace();
@@ -313,8 +311,7 @@ public class Monitorado extends AppCompatActivity {
         toggleBtnIniciar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (toggleBtnIniciar.getText().equals("INICIAR")) {
-                    chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffset);
-                    chronometer.start();// The toggle is disabled
+                    chronometro.start();
                     toggleBtnIniciar.setBackgroundColor(Color.RED);
                     toggleBtnIniciar.setTextColor(Color.WHITE);
                     //reseta o front e  vairavel
@@ -341,8 +338,7 @@ public class Monitorado extends AppCompatActivity {
 
                 } else if (toggleBtnIniciar.getText().equals("FINALIZAR")) {
                     //stop
-                    chronometer.stop();
-                    pauseOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
+                    chronometro.stop();
                     toggleBtnIniciar.setBackgroundColor(Color.GREEN);
                     toggleBtnIniciar.setTextColor(Color.BLACK);
 
@@ -351,8 +347,7 @@ public class Monitorado extends AppCompatActivity {
                     runThread(false);
 
                     //reseta o clonometro
-                    chronometer.setBase(SystemClock.elapsedRealtime());
-                    pauseOffset = 0;
+                    chronometro.reset();
                     try {
                         if (file.exists())
                             fileWrite.close();
@@ -772,7 +767,7 @@ public class Monitorado extends AppCompatActivity {
     public void refresh() {
         Double km = (Speed * 3.6);
         txtDistKM.setText(new DecimalFormat("#.###").format(countDistancia));
-        txtMinKM.setText(calculoPace(chronometer, countDistancia));
+        //txtMinKM.setText(calculoPace(chronometer, countDistancia));
         txtKM.setText(new DecimalFormat("#.##").format(km));
     }
 

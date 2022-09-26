@@ -131,8 +131,7 @@ public class AlunoResource {
         StringBuffer buffer= new StringBuffer();
         while (cursor.moveToNext())
         {
-            long matricula = 0;
-            matricula = cursor.getInt(cursor.getColumnIndex(myDbHelper.MATRICULA));
+            long matricula = cursor.getInt(cursor.getColumnIndex(myDbHelper.MATRICULA));
             String nome =cursor.getString(cursor.getColumnIndex(myDbHelper.NOME));
             String  altura =cursor.getString(cursor.getColumnIndex(myDbHelper.ALTURA));
             String  peso =cursor.getString(cursor.getColumnIndex(myDbHelper.PESO));

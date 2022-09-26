@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Chronometer;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -45,6 +46,7 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.avfisica.Chronometro;
 import com.example.avfisica.MainActivity;
 import com.example.avfisica.R;
 import com.example.avfisica.Register;
@@ -847,6 +849,7 @@ public class Treino extends AppCompatActivity {
             final Button mbuttonSalvar = (Button) mView.findViewById(R.id.button_salvar);
             final CheckBox checkBox_all = (CheckBox) mView.findViewById(R.id.checkBox_all_exercicio);
             final TextView mtxtObs = (TextView) mView.findViewById(R.id.txtObs);
+            final Chronometro chronometro = new Chronometro(this, (Chronometer) (Chronometer)mView.findViewById(R.id.chronoTreino));
 
             //reset do objeto front-end
             mImageExercicio.setImageBitmap(null);
@@ -854,6 +857,8 @@ public class Treino extends AppCompatActivity {
             mImageExercicio.setImageURI(null);
             mbuttonSalvar.setVisibility(View.INVISIBLE);
             mtxtObs.setText(fichaItens.getObs());
+            chronometro.createChronometer();
+            chronometro.start();
 
             //gif default de instalação
             if ((exercicio.getPath_gif()==null) || (exercicio.getPath_gif().equals("-")) )

@@ -6,6 +6,23 @@
     android:layout_height="match_parent"
     android:background="@color/ic_foto_background">
 
+    <Chronometer
+        android:id="@+id/chronoTreino"
+        android:layout_width="77dp"
+        android:layout_height="53dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/background_light"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewExercicio"
+        app:layout_constraintHorizontal_bias="0.596"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></Chronometer>
+
     <TextView
         android:id="@+id/txtObs"
         android:layout_width="387dp"
