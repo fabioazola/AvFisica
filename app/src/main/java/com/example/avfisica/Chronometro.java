@@ -20,7 +20,7 @@ public class Chronometro {
         boolean flag = false;
         try {
             this.chronometer.setBase(SystemClock.elapsedRealtime());
-            this.chronometer.setAutoSizeTextTypeUniformWithConfiguration(30, 50, 1, 1);
+            this.chronometer.setAutoSizeTextTypeUniformWithConfiguration(20, 40, 1, 1);
             this.chronometer.setBackgroundColor(Color.WHITE); // set green color for the background of a chronometer
             this.chronometer.setTextColor(Color.BLACK);
             flag = true;
