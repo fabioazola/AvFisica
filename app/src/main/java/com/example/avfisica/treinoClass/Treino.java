@@ -850,6 +850,7 @@ public class Treino extends AppCompatActivity {
             final CheckBox checkBox_all = (CheckBox) mView.findViewById(R.id.checkBox_all_exercicio);
             final TextView mtxtObs = (TextView) mView.findViewById(R.id.txtObs);
             final Chronometro chronometro = new Chronometro(this, (Chronometer) (Chronometer)mView.findViewById(R.id.chronoTreino));
+            final ImageButton mbuttonResetCrono = (ImageButton) mView.findViewById(R.id.imageCronometro);
 
             //reset do objeto front-end
             mImageExercicio.setImageBitmap(null);
@@ -923,10 +924,20 @@ public class Treino extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
+
                 builder.show();
             }
             else
                 Toast.makeText(getApplicationContext(), "Treino não iniciado!", Toast.LENGTH_SHORT).show();
+
+            //reset do cronometro
+            mbuttonResetCrono.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v)
+                {
+                    chronometro.reset();
+                }
+            });
+
 
         } catch (Exception e) {
             e.printStackTrace();
