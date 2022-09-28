@@ -5,13 +5,9 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
-import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
-import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanSettings;
 import android.content.BroadcastReceiver;
@@ -25,12 +21,9 @@ import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
@@ -66,31 +59,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.UUID;
 
 
 public class Monitorado extends AppCompatActivity {
 
     //##### CONSTANTES #####
     private static final int REQUEST_ENABLE_BT = 0;
-    private static final long SCAN_PERIOD = 10000;
     private static final int TIMEOUT_SEMAFARO_CONNECT = 10;
     private static final int TIMEOUT_CONNECT = 10;
-    public static boolean flagTurnOn = false;
-    public final static byte FALSE = 0;
-    public final static UUID UUID_HEART_RATE_MEASUREMENT =
-            UUID.fromString("00002A37-0000-1000-8000-00805F9B34FB");
-    public final static UUID DESCRIPTOR_CCC_UUID =
-            UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
-    public final static String ACTION_DATA_AVAILABLE =
-            "com.autonomo.bluetooh.ACTION_DATA_AVAILABLE";
-    private static final Double GPS_MARGEM_ERRO = 0.005; //5 metros
 
     //### VARIAVEIS ####
     private BluetoothAdapter mBluetoothAdapter;
-    private Handler mHandler;
-    private BluetoothGatt mGatt;
-    private BluetoothLeScanner mLEScanner;
     private ScanSettings settings;
     private List<ScanFilter> filters;
 
@@ -102,7 +81,8 @@ public class Monitorado extends AppCompatActivity {
     BluetoothGattDescriptor descriptor_bkp;
     BluetoothDevice device_bkp;
     BluetoothAdapter bluetoothAdapter;
-    public Device cintaDevice = new Device();
+    //public Device cintaDevice = new Device();
+    public BlueToothBLE deviceBle = null;
     int nextIndiceDevice = 0; //próximo indice da fila a se conectar
     int indice_bkp = 0;
     int countSemafaroConnect = TIMEOUT_SEMAFARO_CONNECT;
@@ -176,6 +156,8 @@ public class Monitorado extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitorado);
 
+        this.deviceBle = new BlueToothBLE(this);
+
         mHeartRate = (TextView) findViewById(R.id.textHeartRate);
         mHeartRate.setGravity(View.TEXT_ALIGNMENT_CENTER);
         mHeartRate.setTextSize(70);
@@ -222,12 +204,12 @@ public class Monitorado extends AppCompatActivity {
         helperAluno = new AlunoResource(this);
         aluno = helperAluno.getData(Register.id_login);
 
-        cintaDevice.nomeAluno = aluno.getNome();
-        cintaDevice.idade = aluno.getIdade();
-        cintaDevice.peso = aluno.getPeso();
-        cintaDevice.sexo = aluno.getSexo();
+        this.deviceBle.cintaDevice.nomeAluno = aluno.getNome();
+        this.deviceBle.cintaDevice.idade = aluno.getIdade();
+        this.deviceBle.cintaDevice.peso = aluno.getPeso();
+        this.deviceBle.cintaDevice.sexo = aluno.getSexo();
         if ((aluno.getCintaMac() != null) && (!aluno.getCintaMac().equals("-")))
-            cintaDevice.device = mBluetoothAdapter.getRemoteDevice(aluno.getCintaMac()); //"C2:ED:E2:32:16:22"
+            this.deviceBle.cintaDevice.device = mBluetoothAdapter.getRemoteDevice(aluno.getCintaMac()); //"C2:ED:E2:32:16:22"
 
         // Register for broadcasts when a device is discovered.
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -372,7 +354,7 @@ public class Monitorado extends AppCompatActivity {
         });
 
         //######## Thread Atualiza o front-end #######
-        if (cintaDevice.device != null) {  //evita ligar a thread sem mac cadastrado
+        if (this.deviceBle.cintaDevice.device != null) {  //evita ligar a thread sem mac cadastrado
             mHandlerFrontEnd = new Thread() {
                 public void run() {
                     while (loopThread==0) {
@@ -422,130 +404,12 @@ public class Monitorado extends AppCompatActivity {
     }
 
 
-    //############# BLE ###################
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    public void connectToDevice(Device cintaDevice) {
-        try {
-            if ((cintaDevice.device != null) &
-                    (!cintaDevice.flagConect)) {
-                cintaDevice.gatt = cintaDevice.device.connectGatt(this, false, gattCallback);
-            }
-        } catch (Exception e) {
-        }
-        ;
-    }
-
-    //###################### GATT SERVICE#######################################
-    private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-        @Override
-        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-            try {
-                switch (newState) {
-                    case BluetoothProfile.STATE_CONNECTED:
-                        countSemafaroConnect = 0; //LIGA O SEMÁFARO
-                        Thread.sleep(2000); // DELAY -> POLAR
-                        gatt.discoverServices();
-                        break;
-                    case BluetoothProfile.STATE_DISCONNECTED:
-                        imagem_ble.setVisibility(View.INVISIBLE);
-                        break;
-                    default:
-                }
-            } catch (Exception e) {
-            }
-            ;
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-        @Override
-        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-            List<BluetoothGattService> services = gatt.getServices();
-            boolean flag = false;
-
-            for (BluetoothGattService service : services) {
-                countSemafaroConnect = 0; //liga semafaro (sinal vermelho)
-
-                if (flag) { //apenas serviÃ§o de heart rate
-                    break;
-                }
-                for (BluetoothGattCharacteristic characteristic : service.getCharacteristics()) {
-                    //evita que de timeout
-                    cintaDevice.timeout = 0;
-
-                    // Set notifiable
-                    gatt.setCharacteristicNotification(characteristic, true);
-                    characteristic_bkp = characteristic;
-
-                    // Enable notification descriptor
-                    BluetoothGattDescriptor descriptor = characteristic.getDescriptor(DESCRIPTOR_CCC_UUID);
-                    if (descriptor != null) {
-                        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-                        gatt.writeDescriptor(descriptor);
-                        descriptor_bkp = descriptor;
-                        if (characteristic.getUuid().equals(UUID_HEART_RATE_MEASUREMENT)) {
-                            if (cintaDevice.getdevice(gatt.getDevice(), cintaDevice)) {
-                                flag = true;
-
-                                cintaDevice.characteristic = characteristic_bkp;
-                                cintaDevice.descriptor = descriptor_bkp;
-                                notify();
-                            }
-                        }
-                    }
-                    // Read characteristic
-                    if (!gatt.readCharacteristic(characteristic)) {
-                        // Log.e(TAG, "Failed to read characteristic: " + characteristic.toString());
-                    }
-                }
-            }
-        }
-
-
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-        private void broadcastUpdate(final String action,
-                                     final BluetoothGattCharacteristic characteristic) {
-            if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
-                int flag = characteristic.getProperties();
-                int format = -1;
-                if ((flag & 0x01) != 0) {
-                    format = BluetoothGattCharacteristic.FORMAT_UINT16;
-                } else {
-                    format = BluetoothGattCharacteristic.FORMAT_UINT8;
-                }
-                final int heartRate = characteristic.getIntValue(format, 1);
-
-                //verifica qual cinta cadastrada recebeu o valor do batimento
-
-                if ((cintaDevice.characteristic != null) && (cintaDevice.characteristic.equals(characteristic))) {
-                    imagem_ble.setVisibility(View.VISIBLE);
-                    cintaDevice.heartRate = heartRate;
-                    cintaDevice.timeout = 0; //reseta o timeout
-                    cintaDevice.flagConect = true; //conectado
-                    cintaDevice.flagLastConnect = true;
-                    cintaDevice.indexBufferHeartRate++;
-                    cintaDevice.bufferheartrate[cintaDevice.indexBufferHeartRate] = heartRate;
-                    notify();
-                }
-            }
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-        @Override
-        // Characteristic notification
-        public void onCharacteristicChanged(BluetoothGatt gatt,
-                                            BluetoothGattCharacteristic characteristic) {
-            broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-        }
-
-    };
-
 
     //################# Update front end #################################
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     private void update_front_end() {
-        updateCinta(cintaDevice);
-        notify(cintaDevice);
+        updateCinta(this.deviceBle);
+        this.deviceBle.notify_blue();
 
         //PERIÓDICO
         try {
@@ -561,25 +425,25 @@ public class Monitorado extends AppCompatActivity {
             //inclementa o contador de timeout para todas cintas ja cadastradas com serviço
             //caso aconteça o timeout libera a posicao na  lista
             if (countSemafaroConnect == TIMEOUT_SEMAFARO_CONNECT) {
-                if ((!cintaDevice.flagConect) &&
-                        (cintaDevice.device != null)) {
+                if ((!this.deviceBle.cintaDevice.flagConect) &&
+                        (this.deviceBle.cintaDevice.device != null)) {
                     countSemafaroConnect = 0; //LIGA O SEMÁFARO
                     indice_bkp = nextIndiceDevice;
-                    connectToDevice(cintaDevice);
+                    this.deviceBle.connectToDevice();
                 }
 
                 //a cada timeout definido na constante TIMEOUT_CONNECT é feita uma verificação de conexão
-                cintaDevice.timeout++;
-                if (cintaDevice.timeout >= TIMEOUT_CONNECT) {
-                    cintaDevice.flagConect = false;
-                    cintaDevice.timeout = 0;
+                this.deviceBle.cintaDevice.timeout++;
+                if (this.deviceBle.cintaDevice.timeout >= TIMEOUT_CONNECT) {
+                    this.deviceBle.cintaDevice.flagConect = false;
+                    this.deviceBle.cintaDevice.timeout = 0;
                 }
             }
 
             // grava informaçao no arquivo
             if (fileWrite!=null) {
                 writeFile(fileWrite, "#"+lat.toString()+";"+lng.toString()+";"+Alt.toString()+";"+Speed.toString()+";"+
-                        cintaDevice.heartRate+";"+
+                        this.deviceBle.cintaDevice.heartRate+";"+
                         new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date())+";"+
                         txtDistKM.getText()+"*");
             }
@@ -589,47 +453,47 @@ public class Monitorado extends AppCompatActivity {
         }
     }
 
-    private void updateCinta(Device cintaDevice) {
+    private void updateCinta(BlueToothBLE blueToothBLE) {
         try {
-            if (cintaDevice.flagConect)
+            if (blueToothBLE.cintaDevice.flagConect)
             {
                 x++; // Contador para conta de caloria
                 //Atualiza o Heartrate
-                setLineCor(mHeartRate, cintaDevice);
-                mHeartRate.setText(String.valueOf(cintaDevice.heartRate) + "bpm");
+                setLineCor(mHeartRate, blueToothBLE.cintaDevice);
+                mHeartRate.setText(String.valueOf(blueToothBLE.cintaDevice.heartRate) + "bpm");
 
                 // Porcentagem da Frequencia
-                int freqporc = (cintaDevice.heartRate * 100 / (220 - (int) cintaDevice.idade)); // Porcentagem BPM x Idade
+                int freqporc = (blueToothBLE.cintaDevice.heartRate * 100 / (220 - (int) blueToothBLE.cintaDevice.idade)); // Porcentagem BPM x Idade
                 DecimalFormat format = new DecimalFormat("#.#"); //Travar em duas casas decimais
 
-                if (cintaDevice.sexo.equals("m") || cintaDevice.sexo.equals("M")) {
+                if (blueToothBLE.cintaDevice.sexo.equals("m") || blueToothBLE.cintaDevice.sexo.equals("M")) {
                     // Caloria Homem
-                    cintaDevice.kcal = ((((-55.09 + (0.63 * cintaDevice.heartRate) + (0.19 * cintaDevice.peso)) + (0.20 * cintaDevice.idade)) / 4.18) * (60 * (x / 2) / 3600)); // Caloria Homem
-                    if(cintaDevice.kcal> kcal_before){
-                        cintaDevice.kcal = Math.round((cintaDevice.kcal*100.0)/100.0);               // '' ''
-                        kcal_before = cintaDevice.kcal; // Tratativa para não diminuir a caloria qnd diminuir o batimento
-                    }else cintaDevice.kcal = Math.round((kcal_before*100.0)/100);
+                    blueToothBLE.cintaDevice.kcal = ((((-55.09 + (0.63 * blueToothBLE.cintaDevice.heartRate) + (0.19 * blueToothBLE.cintaDevice.peso)) + (0.20 * blueToothBLE.cintaDevice.idade)) / 4.18) * (60 * (x / 2) / 3600)); // Caloria Homem
+                    if(blueToothBLE.cintaDevice.kcal> kcal_before){
+                        blueToothBLE.cintaDevice.kcal = Math.round((blueToothBLE.cintaDevice.kcal*100.0)/100.0);               // '' ''
+                        kcal_before = blueToothBLE.cintaDevice.kcal; // Tratativa para não diminuir a caloria qnd diminuir o batimento
+                    }else blueToothBLE.cintaDevice.kcal = Math.round((kcal_before*100.0)/100);
 
 
                 } else {
                     //Caloria Mulher
-                    cintaDevice.kcal = ((((-20.4022 + (0.4472 * cintaDevice.heartRate) - (0.1263 * cintaDevice.peso)) + (0.074 * cintaDevice.idade)) / 4.184) * (60 * (x / 2) / 3600));
-                    if(cintaDevice.kcal> kcal_before){
-                        cintaDevice.kcal = Math.round((cintaDevice.kcal*100.0)/100.0);                // '' ''
-                        kcal_before = cintaDevice.kcal; // Tratativa para não diminuir a caloria qnd diminuir o batimento
-                    }else cintaDevice.kcal = Math.round((kcal_before*100.0)/100);
+                    blueToothBLE.cintaDevice.kcal = ((((-20.4022 + (0.4472 * blueToothBLE.cintaDevice.heartRate) - (0.1263 * blueToothBLE.cintaDevice.peso)) + (0.074 * blueToothBLE.cintaDevice.idade)) / 4.184) * (60 * (x / 2) / 3600));
+                    if(blueToothBLE.cintaDevice.kcal> kcal_before){
+                        blueToothBLE.cintaDevice.kcal = Math.round((blueToothBLE.cintaDevice.kcal*100.0)/100.0);                // '' ''
+                        kcal_before = blueToothBLE.cintaDevice.kcal; // Tratativa para não diminuir a caloria qnd diminuir o batimento
+                    }else blueToothBLE.cintaDevice.kcal = Math.round((kcal_before*100.0)/100);
 
                 }
 
-                if (cintaDevice.kcal < 0) {
-                    cintaDevice.kcal = 0;
+                if (blueToothBLE.cintaDevice.kcal < 0) {
+                    blueToothBLE.cintaDevice.kcal = 0;
                 }
 
                 min = 400;
 
                 //#################### FREQ MIN && MAX ################################
-                for (int i = 0; i <= cintaDevice.indexBufferHeartRate; i++) {
-                    int convertedValues_[] = cintaDevice.bufferheartrate;
+                for (int i = 0; i <= this.deviceBle.cintaDevice.indexBufferHeartRate; i++) {
+                    int convertedValues_[] = this.deviceBle.cintaDevice.bufferheartrate;
 
                     if (convertedValues_[i] > 30) {
                         bufferhr[i] = convertedValues_[i];
@@ -644,12 +508,12 @@ public class Monitorado extends AppCompatActivity {
 
                 //#####################################################################
 
-                cintaDevice.contFreqMedia++; // Contador
+                this.deviceBle.cintaDevice.contFreqMedia++; // Contador
                 // Frequencia media
-                double fcmedia = (cintaDevice.heartRate + cintaDevice.fcmedia_bkp);
-                cintaDevice.fcmedia_bkp = fcmedia;
-                cintaDevice.fcmedia2 = (int) fcmedia / cintaDevice.contFreqMedia;
-                txtCaloria.setText("Calorias :" + String.valueOf(cintaDevice.kcal) + "kcal" + "\n" + "FCmin: " + min + "\n" + "FCmax: " + max + "\n" + "FCmedia: " + String.valueOf(cintaDevice.fcmedia2));
+                double fcmedia = (this.deviceBle.cintaDevice.heartRate + this.deviceBle.cintaDevice.fcmedia_bkp);
+                this.deviceBle.cintaDevice.fcmedia_bkp = fcmedia;
+                this.deviceBle.cintaDevice.fcmedia2 = (int) fcmedia / this.deviceBle.cintaDevice.contFreqMedia;
+                txtCaloria.setText("Calorias :" + String.valueOf(this.deviceBle.cintaDevice.kcal) + "kcal" + "\n" + "FCmin: " + min + "\n" + "FCmax: " + max + "\n" + "FCmedia: " + String.valueOf(blueToothBLE.cintaDevice.fcmedia2));
             }
 
         } catch (Exception e) {
@@ -885,7 +749,7 @@ public class Monitorado extends AppCompatActivity {
     }
 
     //##################### Classe de device (mac)###############################
-    public class Device {
+    public static class Device {
 
         public BluetoothGattCharacteristic characteristic;
         public BluetoothGattDescriptor descriptor;
