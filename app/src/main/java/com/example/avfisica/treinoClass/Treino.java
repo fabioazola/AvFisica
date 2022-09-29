@@ -1,8 +1,13 @@
 package com.example.avfisica.treinoClass;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -10,12 +15,15 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -42,25 +50,31 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.avfisica.BlueToothBLE;
 import com.example.avfisica.Chronometro;
 import com.example.avfisica.MainActivity;
+import com.example.avfisica.Monitorado;
 import com.example.avfisica.R;
 import com.example.avfisica.Register;
+import com.example.avfisica.models.Aluno;
 import com.example.avfisica.models.treino.CargaPeso;
 import com.example.avfisica.models.treino.Exercicio;
 import com.example.avfisica.models.treino.Ficha;
 import com.example.avfisica.models.treino.FichaItens;
 import com.example.avfisica.models.treino.TreinoModel;
+import com.example.avfisica.resources.AlunoResource;
 import com.example.avfisica.resources.treino.CargaPesoResource;
 import com.example.avfisica.resources.treino.ExercicioResource;
 import com.example.avfisica.resources.treino.FichaItensResource;
 import com.example.avfisica.resources.treino.FichaResource;
 import com.example.avfisica.resources.treino.TreinoResource;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,6 +82,11 @@ import java.util.List;
 import java.util.Locale;
 
 public class Treino extends AppCompatActivity {
+
+    private static final int REQUEST_ENABLE_BT = 0;
+    private static final int TIMEOUT_SEMAFARO_CONNECT = 10;
+    private static final int TIMEOUT_CONNECT = 10;
+
     Button  btn_iniciar;
     ImageButton btn_edit;
     TableLayout table_exercicio_itens;
@@ -77,6 +96,7 @@ public class Treino extends AppCompatActivity {
     FichaItensResource helperFichaItens;
     ExercicioResource helperExercicio;
     CargaPesoResource helperCargaPeso;
+    AlunoResource helperAluno;
 
     List<TreinoModel> ltreino;
     List<Ficha> lficha;
@@ -87,6 +107,18 @@ public class Treino extends AppCompatActivity {
     TreinoModel treino;
     Ficha ficha;
     FichaItens fichaItens;
+    Aluno aluno ;
+
+    BlueToothBLE deviceBle = null;
+    BluetoothAdapter mBluetoothAdapter;
+    Thread mHandlerFrontEnd = null;
+    static int loopThread = 0;
+    boolean flagThreadFronEnd = false;
+    int countSemafaroConnect = TIMEOUT_SEMAFARO_CONNECT;
+    int nextIndiceDevice = 0; //próximo indice da fila a se conectar
+    int indice_bkp = 0;
+    TextView mHearRate;
+
 
     boolean flagUpdate = false;
     long exercicio_id=0; //utilizado na tela de repetições
@@ -112,15 +144,39 @@ public class Treino extends AppCompatActivity {
         helperFicha = new FichaResource(this);
         helperFichaItens = new FichaItensResource(this);
         helperExercicio = new ExercicioResource(this);
+        helperAluno = new AlunoResource(this);
+
         ficha = new Ficha();
         fichaItens = new FichaItens();
         treino = new TreinoModel();
+        aluno = new Aluno();
 
         ltreino = new ArrayList<TreinoModel>();
         lficha = new ArrayList<Ficha>();
         lfichaItens = new ArrayList<FichaItens>();
         lcargaPesoItens = new ArrayList<CargaPeso>();
         lrepeticao = new ArrayList<Repeticao>();
+
+        this.deviceBle = new BlueToothBLE(this);
+
+        //##############Bluetooth###########
+        final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothAdapter = bluetoothManager.getAdapter();
+
+        //##############Cinta com os dados do aluno###########
+        helperAluno = new AlunoResource(this);
+        aluno = helperAluno.getData(Register.id_login);
+
+        this.deviceBle.cintaDevice.nomeAluno = aluno.getNome();
+        this.deviceBle.cintaDevice.idade = aluno.getIdade();
+        this.deviceBle.cintaDevice.peso = aluno.getPeso();
+        this.deviceBle.cintaDevice.sexo = aluno.getSexo();
+        if ((aluno.getCintaMac() != null) && (!aluno.getCintaMac().equals("-")))
+        {
+            this.deviceBle.cintaDevice.device = mBluetoothAdapter.getRemoteDevice(aluno.getCintaMac()); //"C2:ED:E2:32:16:22"
+
+        }
+
 
         //seleção treino
         btn_iniciar.setVisibility(View.VISIBLE);
@@ -175,6 +231,28 @@ public class Treino extends AppCompatActivity {
                 }
             }
         });
+
+        //### Tread para atualizaçao do batimento cardiaco #############
+        mHandlerFrontEnd = new Thread() {
+            public void run() {
+                while (loopThread==0) {
+                    try {
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                if (flagThreadFronEnd)
+                                    update_front_end();
+                            }
+                        });
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
     }
 
     @Override
@@ -852,6 +930,8 @@ public class Treino extends AppCompatActivity {
             final Chronometro chronometro = new Chronometro(this, (Chronometer) (Chronometer)mView.findViewById(R.id.chronoTreino));
             final ImageButton mbuttonResetCrono = (ImageButton) mView.findViewById(R.id.imageCronometro);
 
+            startCintaBle((TextView) mView.findViewById(R.id.txtHeartRate));
+
             //reset do objeto front-end
             mImageExercicio.setImageBitmap(null);
             mImageExercicio.destroyDrawingCache();
@@ -1010,6 +1090,143 @@ public class Treino extends AppCompatActivity {
         }
         else
             flagUpdate = false; //muda o modo para insert
+    }
+
+    private void startCintaBle(TextView mHearRate)
+    {
+        this.mHearRate = mHearRate;
+        //libera a thread
+        this.flagThreadFronEnd = true;
+        askPermissions();
+        runThread(true);
+    }
+
+    private void askPermissions() {
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+
+        //Configura as permissões
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 1);
+        }
+
+        //liga gps
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean GPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        if(!GPSEnabled){
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
+
+    }
+
+    //################# Update front end #################################
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    private void update_front_end() {
+        updateCinta(this.deviceBle);
+        this.deviceBle.notify_blue();
+
+        //PERIÓDICO
+        try {
+            //semafaroConnetDevice
+            if (countSemafaroConnect != TIMEOUT_SEMAFARO_CONNECT) {
+                //liga a contagem do semáfaro (sinal vermelho)
+                countSemafaroConnect++;
+            } else if (countSemafaroConnect >= TIMEOUT_SEMAFARO_CONNECT) {
+                //para a contagem (sinal verde)
+                countSemafaroConnect = TIMEOUT_SEMAFARO_CONNECT;
+            }
+
+            //inclementa o contador de timeout para todas cintas ja cadastradas com serviço
+            //caso aconteça o timeout libera a posicao na  lista
+            if (countSemafaroConnect == TIMEOUT_SEMAFARO_CONNECT) {
+                if ((!this.deviceBle.cintaDevice.flagConect) &&
+                        (this.deviceBle.cintaDevice.device != null)) {
+                    countSemafaroConnect = 0; //LIGA O SEMÁFARO
+                    indice_bkp = nextIndiceDevice;
+                    this.deviceBle.connectToDevice();
+                }
+
+                //a cada timeout definido na constante TIMEOUT_CONNECT é feita uma verificação de conexão
+                this.deviceBle.cintaDevice.timeout++;
+                if (this.deviceBle.cintaDevice.timeout >= TIMEOUT_CONNECT) {
+                    this.deviceBle.cintaDevice.flagConect = false;
+                    this.deviceBle.cintaDevice.timeout = 0;
+                }
+            }
+       } catch (Exception e) {
+            Log.v("erro", e.toString());
+        }
+    }
+
+    private void updateCinta(BlueToothBLE blueToothBLE) {
+        try {
+            if (blueToothBLE.cintaDevice.flagConect)
+            {
+                //Atualiza o Heartrate
+                setLineCor(this.mHearRate, blueToothBLE.cintaDevice);
+                this.mHearRate.setText(String.valueOf(blueToothBLE.cintaDevice.heartRate) + "bpm");
+            }
+
+        } catch (Exception e) {
+            Log.v("Update Front End Erro=", e.toString());
+        }
+    }
+    private void runThread(boolean flag) {
+        try {
+            if (mHandlerFrontEnd != null) {
+                if (flag) //on thread
+                    mHandlerFrontEnd.start();
+                else if (mHandlerFrontEnd.isAlive())//off thread
+                    mHandlerFrontEnd.interrupt();
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Não foi possivel iniciar ou finalizar o arquivo de análise, tente novamente", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setLineCor(TextView txt, Monitorado.Device cintaDevice) {
+        int idade = (int) cintaDevice.idade;
+        int heartRate = cintaDevice.heartRate;
+        int freqporc = (heartRate * 100 / (220 - idade));
+        // < 114 = Branca
+        if (freqporc <= 60) {
+            txt.setBackgroundColor(Color.WHITE);
+            txt.setTextColor(Color.BLACK);
+        }
+        // 115-133 = Azul
+        else if (freqporc >= 61 && freqporc <= 70) {
+
+            txt.setBackgroundColor(Color.BLUE);
+            txt.setTextColor(Color.WHITE);
+        }
+        // 134-152 = Verde
+        else if (freqporc >= 71 && freqporc <= 80) {
+            txt.setBackgroundColor(Color.GREEN);
+            txt.setTextColor(Color.BLACK);
+        }
+        // 153-171 = Amarelo
+        else if (freqporc >= 81 && freqporc <= 90) {
+            txt.setBackgroundColor(Color.YELLOW);
+            txt.setTextColor(Color.BLACK);
+        }
+        // >172 = Vermelho
+        if (freqporc >= 91) {
+            txt.setBackgroundColor(Color.RED);
+            txt.setTextColor(Color.WHITE);
+        }
     }
 
     @Override
